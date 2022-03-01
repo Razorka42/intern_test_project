@@ -19,12 +19,12 @@ public class Product {
 
     @NotNull
     @NotEmpty
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<NameAndDescription> namesAndDescriptions;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Translation> translations;
 
     @NotNull
     @NotEmpty
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Price> prices;
 
     @CreationTimestamp
@@ -44,7 +44,6 @@ public class Product {
     }
 
     public void setPrices(Set<Price> prices) {
-        prices.forEach(x -> x.setProduct(this));
         this.prices = prices;
 
     }
@@ -57,17 +56,12 @@ public class Product {
         return updatedAt;
     }
 
-    public Set<NameAndDescription> getNamesAndDescriptions() {
-        return namesAndDescriptions;
+    public Set<Translation> getTranslations() {
+        return translations;
     }
 
-    public void setNamesAndDescriptions(Set<NameAndDescription> namesAndDescriptions) {
-        namesAndDescriptions.forEach(x -> x.setProduct(this));
-        this.namesAndDescriptions = namesAndDescriptions;
+    public void setTranslations(Set<Translation> translations) {
+        this.translations = translations;
     }
 
-    public void updateFromProduct(Product product) {
-        setNamesAndDescriptions(product.getNamesAndDescriptions());
-        setPrices(product.getPrices());
-    }
 }

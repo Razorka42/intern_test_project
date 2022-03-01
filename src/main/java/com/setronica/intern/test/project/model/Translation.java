@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "translations")
-public class NameAndDescription {
+public class Translation {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,16 +43,8 @@ public class NameAndDescription {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getLanguage() {
         return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
     }
 
     public void setProduct(Product product) {

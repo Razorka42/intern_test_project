@@ -38,15 +38,8 @@ public class Price {
         this.product = product;
     }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
     public double getValue() {
         return value;
     }
 
-    public void setValue(double value) {
-        this.value = value;
-    }
 }

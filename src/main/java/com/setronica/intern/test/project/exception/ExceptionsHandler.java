@@ -26,6 +26,11 @@ public class ExceptionsHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(ResourceQueryNotFoundException.class)
+    public ResponseEntity<NotFoundError> onResourceQueryNotFoundException(ResourceQueryNotFoundException ex) {
+        return new ResponseEntity<>(new NotFoundError(HttpStatus.NOT_FOUND.value(), ex.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Map<String, String>> onConstraintViolationException(ConstraintViolationException e) {
         Map<String, String> errors = new HashMap<>();
