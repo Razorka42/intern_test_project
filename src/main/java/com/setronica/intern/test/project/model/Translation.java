@@ -7,12 +7,13 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@IdClass(TranslationsKey.class)
 @Table(name = "translations")
 public class Translation {
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+
+//    @Column(name = "id")
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private long id;
 
     @NotNull
     @NotBlank
@@ -22,11 +23,12 @@ public class Translation {
     @Length(max = 255)
     private String description;
 
+    @Id
     @NotNull
     @NotBlank
-    @Length(min = 3, max = 3)
     private String language;
 
+    @Id
     @ManyToOne(optional = false)
     @JoinColumn(name = "product_id")
     private Product product;
