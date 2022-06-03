@@ -1,7 +1,8 @@
 package com.setronica.intern.test.project.controller;
 
-import com.setronica.intern.test.project.model.Product;
-import com.setronica.intern.test.project.service.ProductAdminService;
+import com.setronica.intern.test.project.dto.request.AdminRequestProductDTO;
+import com.setronica.intern.test.project.dto.response.AdminResponseProductDTO;
+import com.setronica.intern.test.project.service.ProductAdminServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,32 +18,32 @@ import java.util.List;
 @RequestMapping(value = "/admin")
 public class ProductAdminController {
 
-    private final ProductAdminService productService;
+    private final ProductAdminServiceInterface productService;
 
     @Autowired
-    public ProductAdminController(ProductAdminService productService) {
+    public ProductAdminController(ProductAdminServiceInterface productService) {
         this.productService = productService;
     }
 
     @PostMapping(value = "/products")
-    public ResponseEntity<?> create(@RequestBody @Valid Product product) {
-        productService.create(product);
+    public ResponseEntity<?> create(@RequestBody @Valid AdminRequestProductDTO productDTO) {
+        productService.create(productDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/products")
-    public ResponseEntity<List<Product>> findAll() {
+    public ResponseEntity<List<AdminResponseProductDTO>> findAll() {
         return new ResponseEntity<>(productService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/products/{id}")
-    public ResponseEntity<Product> findById(@Positive @PathVariable(name = "id") long id) {
+    public ResponseEntity<AdminResponseProductDTO> findById(@Positive @PathVariable(name = "id") long id) {
         return new ResponseEntity<>(productService.findByID(id), HttpStatus.OK);
     }
 
     @PutMapping(value = "/products/{id}")
-    public ResponseEntity<?> update(@Positive @PathVariable(name = "id") long id, @RequestBody @Valid Product product) {
-        productService.update(id, product);
+    public ResponseEntity<?> update(@Positive @PathVariable(name = "id") long id, @RequestBody @Valid AdminRequestProductDTO productDTO) {
+        productService.update(id, productDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

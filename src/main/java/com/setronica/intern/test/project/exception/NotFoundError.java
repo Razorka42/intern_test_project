@@ -1,6 +1,8 @@
 package com.setronica.intern.test.project.exception;
 
-public class NotFoundError {
+import java.io.Serializable;
+
+public class NotFoundError implements Serializable {
     private int errorCode;
     private String errorMessage;
 

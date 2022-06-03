@@ -2,6 +2,8 @@ package com.setronica.intern.test.project.exception;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,12 @@ public class ExceptionsHandler {
     public ResponseEntity<NotFoundError> onResourceQueryNotFound(ResourceQueryNotFoundException ex) {
         log.info("Resource query is not correct " + ex.getClass().getSimpleName() + " " + ex.getMessage());
         return new ResponseEntity<>(new NotFoundError(HttpStatus.NOT_FOUND.value(), ex.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<?> BadRequestException(BadRequestException ex) {
+        log.info(ex.getClass().getSimpleName() + " " + ex.getMessage());
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -73,5 +81,16 @@ public class ExceptionsHandler {
         return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Object> onDataIntegrityViolation(DataIntegrityViolationException ex) {
+        log.error("It looks like there are several identical currencies or languages in the product being created. Please fix this and resubmit your request. " + ex.getClass().getSimpleName() + " " + ex.getMessage());
+        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(InvalidDataAccessApiUsageException.class)
+    public ResponseEntity<Object> onDataIntegrityViolation(InvalidDataAccessApiUsageException ex) {
+        log.error("It looks like there are several identical currencies or languages in the product. Please fix this and resubmit your request. " + ex.getClass().getSimpleName() + " " + ex.getMessage());
+        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
 }

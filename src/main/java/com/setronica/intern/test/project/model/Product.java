@@ -6,12 +6,14 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
 @Entity
 @Table(name = "product")
-public class Product {
+public class Product implements Serializable {
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +37,9 @@ public class Product {
     @Column(name = "updated_at")
     private Date updatedAt;
 
+    public Product() {
+    }
+
     public Long getId() {
         return id;
     }
@@ -46,6 +51,10 @@ public class Product {
     public void setPrices(Set<Price> prices) {
         this.prices = prices;
 
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Date getCreatedAt() {

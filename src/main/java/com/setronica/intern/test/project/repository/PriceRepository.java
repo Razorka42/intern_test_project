@@ -4,5 +4,5 @@ import com.setronica.intern.test.project.model.Price;
 import com.setronica.intern.test.project.model.PriceKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PriceRepository extends JpaRepository<Price, Long> {
+public interface PriceRepository extends JpaRepository<Price, PriceKey> {
 }
