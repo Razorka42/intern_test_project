@@ -1,8 +1,7 @@
 package com.setronica.intern.test.project.controller;
 
-import com.setronica.intern.test.project.model.Product;
-import com.setronica.intern.test.project.service.ProductClientService;
-import org.hibernate.validator.constraints.Length;
+import com.setronica.intern.test.project.dto.response.ClientResponseProductDTO;
+import com.setronica.intern.test.project.service.ProductClientServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,26 +19,26 @@ import javax.validation.constraints.Positive;
 @RestController
 @Validated
 public class ProductClientController {
-    private final ProductClientService productClientService;
+    private final ProductClientServiceInterface productClientService;
 
     @Autowired
-    public ProductClientController(ProductClientService productClientService) {
+    public ProductClientController(ProductClientServiceInterface productClientService) {
         this.productClientService = productClientService;
     }
 
     @GetMapping(value = "/products")
-    public ResponseEntity<Page<Product>> findProducts(
-            @RequestParam @NotBlank @Length(min = 3, max = 3) String currency,
-            @RequestParam @NotBlank @Length(min = 3, max = 3) String language,
+    public ResponseEntity<Page<ClientResponseProductDTO>> findProducts(
+            @RequestParam @NotBlank String currency,
+            @RequestParam @NotBlank String language,
             Pageable page
     ) {
         return new ResponseEntity<>(productClientService.findAll(currency, language, page), HttpStatus.OK);
     }
 
     @GetMapping(value = "/products/search")
-    public ResponseEntity<Page<Product>> searchProduct(
-            @RequestParam @NotBlank @Length(min = 3, max = 3) String currency,
-            @RequestParam @NotBlank @Length(min = 3, max = 3) String language,
+    public ResponseEntity<Page<ClientResponseProductDTO>> searchProduct(
+            @RequestParam @NotBlank String currency,
+            @RequestParam @NotBlank String language,
             @RequestParam @NotBlank String term,
             Pageable page
     ) {
@@ -47,10 +46,10 @@ public class ProductClientController {
     }
 
     @GetMapping(value = "/products/{id}")
-    public ResponseEntity<Product> findProductByID(
+    public ResponseEntity<ClientResponseProductDTO> findProductByID(
             @Positive @PathVariable(name = "id") long id,
-            @RequestParam @NotBlank @Length(min = 3, max = 3) String currency,
-            @RequestParam @NotBlank @Length(min = 3, max = 3) String language) {
+            @RequestParam @NotBlank String currency,
+            @RequestParam @NotBlank String language) {
         return new ResponseEntity<>(productClientService.findById(currency, language, id), HttpStatus.OK);
     }
 }

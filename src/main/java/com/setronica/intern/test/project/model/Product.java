@@ -50,7 +50,6 @@ public class Product implements Serializable {
 
     public void setPrices(Set<Price> prices) {
         this.prices = prices;
-
     }
 
     public void setId(Long id) {

@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Set;
 
-public class AdminResponseProductDTO {
+public final class AdminResponseProductDTO {
     @NotNull
     private Long id;
     @NotNull
@@ -15,7 +15,11 @@ public class AdminResponseProductDTO {
     @NotNull
     @NotEmpty
     private Set<AdminResponsePriceDTO> prices;
+    @NotNull
+    @NotEmpty
     private Date createdAt;
+    @NotNull
+    @NotEmpty
     private Date updatedAt;
 
     public AdminResponseProductDTO() {

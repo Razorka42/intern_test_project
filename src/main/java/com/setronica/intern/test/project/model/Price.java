@@ -14,18 +14,10 @@ public class Price implements Serializable {
     @EmbeddedId
     private PriceKey priceKey;
 
-    //    @Id
     @NotNull
     @NotBlank
     @Column(insertable = false, updatable = false)
     private String currency;
-
-//    @Id
-//    @NotNull
-//    @NotBlank
-//    @Column(name = "product_id", insertable = false, updatable = false)
-//    private Long productId;
-
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "product_id")
@@ -41,7 +33,7 @@ public class Price implements Serializable {
         this.currency = currency;
         this.product = product;
         this.value = value;
-        priceKey = new PriceKey(this.getProduct().getId(), this.getCurrency());
+        priceKey = new PriceKey(getProduct().getId(), getCurrency());
     }
 
     public Price() {

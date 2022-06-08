@@ -50,27 +50,17 @@ public class ProductAdminService implements ProductAdminServiceInterface {
     public void create(AdminRequestProductDTO productDTO) {
         Set<AdminRequestPriceDTO> priceDTOS = productDTO.getPrices();
         Set<AdminRequestTranslationDTO> translationDTOS = productDTO.getTranslations();
-        if (isUniqueCurrenciesFromRequestProductDTO(priceDTOS) && isLanguagesFromRequestProductDTO(translationDTOS)) {
-            Set<Price> prices = new HashSet<>();
+        if (isUniqueCurrenciesFromRequestProductDTO(priceDTOS) && isUniqueLanguagesFromRequestProductDTO(translationDTOS)) {
             Product product = new Product();
-            priceDTOS.forEach(priceDTO -> {
-                Price price = new Price(priceDTO.getCurrency(), product, priceDTO.getValue());
-                prices.add(price);
-            });
-
-            Set<Translation> translations = new HashSet<>();
-            translationDTOS.forEach(translationDTO -> {
-                Translation translation = new Translation(translationDTO.getName(), translationDTO.getDescription(), translationDTO.getLanguage(), product);
-                translations.add(translation);
-            });
-
+            Set<Price> prices = createPricesFromDTOPrices(priceDTOS, product);
+            Set<Translation> translations = createTranslationsFromDTOTranslations(translationDTOS, product);
             product.setPrices(prices);
             product.setTranslations(translations);
             productRepository.save(product);
         }
     }
 
-    private static boolean isUniqueCurrenciesFromRequestProductDTO(Set<AdminRequestPriceDTO> priceDTOS) {
+    private boolean isUniqueCurrenciesFromRequestProductDTO(Set<AdminRequestPriceDTO> priceDTOS) {
         List<String> currenciesFromDTOList = new ArrayList<>();
         priceDTOS.forEach(priceDTO -> {
             String currencyFromPriceDTO = priceDTO.getCurrency();
@@ -83,7 +73,7 @@ public class ProductAdminService implements ProductAdminServiceInterface {
         return true;
     }
 
-    private static boolean isLanguagesFromRequestProductDTO(Set<AdminRequestTranslationDTO> translationDTOS) {
+    private boolean isUniqueLanguagesFromRequestProductDTO(Set<AdminRequestTranslationDTO> translationDTOS) {
         List<String> languagesFromDTOList = new ArrayList<>();
         translationDTOS.forEach(translationDTO -> {
             String languageFromTranslationDTO = translationDTO.getLanguage();
@@ -96,60 +86,76 @@ public class ProductAdminService implements ProductAdminServiceInterface {
         return true;
     }
 
-    public static boolean isUnique(List<String> propertyFromDTOList) {
+    private boolean isUnique(List<String> propertyFromDTOList) {
         Set<String> propertyFromDTOSet = new HashSet<>(propertyFromDTOList);
         return propertyFromDTOSet.size() == propertyFromDTOList.size();
     }
 
+    private Set<Price> createPricesFromDTOPrices(Set<AdminRequestPriceDTO> priceDTOS, Product product) {
+        Set<Price> prices = new HashSet<>();
+        priceDTOS.forEach(priceDTO -> {
+            Price price = new Price(priceDTO.getCurrency(), product, priceDTO.getValue());
+            prices.add(price);
+        });
+        return prices;
+    }
+
+    private Set<Translation> createTranslationsFromDTOTranslations(Set<AdminRequestTranslationDTO> translationDTOS, Product product) {
+        Set<Translation> translations = new HashSet<>();
+        translationDTOS.forEach(translationDTO -> {
+            Translation translation = new Translation(translationDTO.getName(), translationDTO.getDescription(), translationDTO.getLanguage(), product);
+            translations.add(translation);
+        });
+        return translations;
+    }
 
     public AdminResponseProductDTO findByID(long id) {
-        Product product = productRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+        Product product = findProductByID(id);
         return createResponseProductDTO(product);
     }
 
-    private static AdminResponseProductDTO createResponseProductDTO(Product product) {
-        Set<AdminResponsePriceDTO> priceDTOS = new HashSet<>();
-        Set<AdminResponseTranslationDTO> translationDTOS = new HashSet<>();
+    private Product findProductByID(long id) {
+        return productRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+    }
+
+    private AdminResponseProductDTO createResponseProductDTO(Product product) {
         Set<Price> prices = product.getPrices();
+        Set<AdminResponsePriceDTO> priceDTOS = createResponsePriceDTOs(prices);
+        Set<Translation> translations = product.getTranslations();
+        Set<AdminResponseTranslationDTO> translationDTOS = createResponseTranslationsDTOs(translations);
+        return new AdminResponseProductDTO(product.getId(), translationDTOS, priceDTOS, product.getCreatedAt(), product.getUpdatedAt());
+    }
+
+    private Set<AdminResponsePriceDTO> createResponsePriceDTOs(Set<Price> prices) {
+        Set<AdminResponsePriceDTO> priceDTOS = new HashSet<>();
         prices.forEach(price -> {
             AdminResponsePriceDTO priceDTO = new AdminResponsePriceDTO(price.getCurrency(), price.getValue());
             priceDTOS.add(priceDTO);
         });
-        Set<Translation> translations = product.getTranslations();
+        return priceDTOS;
+    }
+
+    private Set<AdminResponseTranslationDTO> createResponseTranslationsDTOs(Set<Translation> translations) {
+        Set<AdminResponseTranslationDTO> translationDTOS = new HashSet<>();
         translations.forEach(translation -> {
             AdminResponseTranslationDTO translationDTO = new AdminResponseTranslationDTO(translation.getName(),
                     translation.getDescription(), translation.getLanguage());
             translationDTOS.add(translationDTO);
         });
-        return new AdminResponseProductDTO(product.getId(), translationDTOS, priceDTOS, product.getCreatedAt(), product.getUpdatedAt());
+        return translationDTOS;
     }
-
 
     @Transactional
     public void update(long id, AdminRequestProductDTO productDTO) {
-        Product current = productRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+        Product current = findProductByID(id);
         Set<AdminRequestPriceDTO> priceDTOS = productDTO.getPrices();
         Set<AdminRequestTranslationDTO> translationDTOS = productDTO.getTranslations();
-        if (isUniqueCurrenciesFromRequestProductDTO(priceDTOS) && isLanguagesFromRequestProductDTO(translationDTOS)) {
+        if (isUniqueCurrenciesFromRequestProductDTO(priceDTOS) && isUniqueLanguagesFromRequestProductDTO(translationDTOS)) {
             Set<Price> currentPrices = current.getPrices();
             Set<Translation> currentTranslations = current.getTranslations();
 
-            Set<Price> updatedPrices = new HashSet<>();
-            Set<Translation> updatedTranslations = new HashSet<>();
-
-
-            priceDTOS.forEach(priceDTO -> {
-                Price updatePrice = new Price(priceDTO.getCurrency(), current, priceDTO.getValue());
-                updatedPrices.add(updatePrice);
-            });
-
-
-            translationDTOS.forEach(translationDTO -> {
-                Translation updateTranslation = new Translation(translationDTO.getName(),
-                        translationDTO.getDescription(), translationDTO.getLanguage(), current);
-                updatedTranslations.add(updateTranslation);
-            });
-
+            Set<Price> updatedPrices = createPricesFromDTOPrices(priceDTOS, current);
+            Set<Translation> updatedTranslations = createTranslationsFromDTOTranslations(translationDTOS, current);
             current.setTranslations(updatedTranslations);
             current.setPrices(updatedPrices);
             productRepository.save(current);
@@ -159,7 +165,7 @@ public class ProductAdminService implements ProductAdminServiceInterface {
     }
 
     public void delete(long id) {
-        productRepository.delete(productRepository.findById(id).orElseThrow(ResourceNotFoundException::new));
+        productRepository.delete(findProductByID(id));
     }
 
 }

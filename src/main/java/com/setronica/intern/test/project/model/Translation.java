@@ -10,10 +10,6 @@ import java.io.Serializable;
 @Entity
 @Table(name = "translations")
 public class Translation implements Serializable {
-
-    //    @Column(name = "id")
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //    private long id;
     @EmbeddedId
     private TranslationsKey translationsKey;
     @NotNull
@@ -24,19 +20,10 @@ public class Translation implements Serializable {
     @Length(max = 255)
     private String description;
 
-
     @NotNull
     @NotBlank
     @Column(insertable = false, updatable = false)
     private String language;
-
-//    @Id
-//    @NotNull
-//    @NotBlank
-//    @Column(name = "product_id", insertable = false, updatable = false)
-//    private Long productId;
-
-
     @ManyToOne(optional = false)
     @JoinColumn(name = "product_id")
     @MapsId("productId")
@@ -47,13 +34,11 @@ public class Translation implements Serializable {
         this.description = description;
         this.language = language;
         this.product = product;
-        translationsKey = new TranslationsKey(this.getProduct().getId(), this.getLanguage());
+        translationsKey = new TranslationsKey(getProduct().getId(), getLanguage());
     }
 
     public Translation() {
     }
-
-
     public String getName() {
         return name;
     }

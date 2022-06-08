@@ -1,4 +1,4 @@
-package com.setronica.intern.test.project.dto.request;
+package com.setronica.intern.test.project.dto.response;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -6,8 +6,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public final class AdminRequestTranslationDTO {
-
+public final class ClientResponseTranslationDTO {
     @NotNull
     @NotBlank
     @Length(max = 255)
@@ -21,11 +20,10 @@ public final class AdminRequestTranslationDTO {
     @NotBlank
     private String language;
 
-    public AdminRequestTranslationDTO(String name, String description, String language) {
+    public ClientResponseTranslationDTO(String name, String description, String language) {
         this.name = name;
         this.description = description;
         this.language = language;
-
     }
 
     public String getName() {
@@ -51,5 +49,4 @@ public final class AdminRequestTranslationDTO {
     public void setLanguage(String language) {
         this.language = language;
     }
-
 }

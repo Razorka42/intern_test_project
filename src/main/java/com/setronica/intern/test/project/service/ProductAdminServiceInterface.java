@@ -2,7 +2,6 @@ package com.setronica.intern.test.project.service;
 
 import com.setronica.intern.test.project.dto.request.AdminRequestProductDTO;
 import com.setronica.intern.test.project.dto.response.AdminResponseProductDTO;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

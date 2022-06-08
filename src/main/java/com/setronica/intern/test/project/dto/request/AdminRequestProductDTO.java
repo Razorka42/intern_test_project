@@ -16,12 +16,9 @@ public final class AdminRequestProductDTO {
     @NotNull
     @NotEmpty
     private Set<AdminRequestPriceDTO> prices;
-    private Date createdAt;
-    private Date updatedAt;
 
     public AdminRequestProductDTO() {
     }
-
     public AdminRequestProductDTO(Set<AdminRequestTranslationDTO> translations, Set<AdminRequestPriceDTO> prices) {
         this.translations = translations;
         this.prices = prices;
@@ -43,19 +40,4 @@ public final class AdminRequestProductDTO {
         this.prices = prices;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }
