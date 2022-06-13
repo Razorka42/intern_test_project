@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
-public final class AdminRequestPriceDTO {
+public class AdminRequestPriceDTO {
     @NotNull
     @NotBlank
     private String currency;

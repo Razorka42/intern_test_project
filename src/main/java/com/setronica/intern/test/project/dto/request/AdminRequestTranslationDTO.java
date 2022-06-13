@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public final class AdminRequestTranslationDTO {
+public class AdminRequestTranslationDTO {
 
     @NotNull
     @NotBlank

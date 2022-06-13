@@ -4,7 +4,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-public final class ClientResponseProductDTO {
+public class ClientResponseProductDTO {
     @NotNull
     private Long id;
     @NotNull

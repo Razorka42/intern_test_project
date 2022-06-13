@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Set;
 
-public final class AdminResponseProductDTO {
+public class AdminResponseProductDTO {
     @NotNull
     private Long id;
     @NotNull

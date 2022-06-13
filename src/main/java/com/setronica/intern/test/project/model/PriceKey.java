@@ -1,7 +1,8 @@
 package com.setronica.intern.test.project.model;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -12,15 +13,23 @@ public class PriceKey implements Serializable {
     public PriceKey() {
     }
 
-    public PriceKey(Long productId, String currency) {
-        this.productId = productId;
+    public PriceKey(Product product, String currency) {
+        this.product = product;
         this.currency = currency;
     }
 
-    @Column(name = "product_id")
-    private Long productId;
-
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
     private String currency;
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 
     public String getCurrency() {
         return currency;
@@ -30,24 +39,17 @@ public class PriceKey implements Serializable {
         this.currency = currency;
     }
 
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof PriceKey)) return false;
         PriceKey priceKey = (PriceKey) o;
-        return productId.equals(priceKey.productId) && currency.equals(priceKey.currency);
+        return product.equals(priceKey.product) && currency.equals(priceKey.currency);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productId, currency);
+        return Objects.hash(product, currency);
     }
+
 }

@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public final class AdminResponseTranslationDTO {
+public class AdminResponseTranslationDTO {
     @NotNull
     @NotBlank
     @Length(max = 255)
@@ -26,6 +26,9 @@ public final class AdminResponseTranslationDTO {
         this.description = description;
         this.language = language;
 
+    }
+
+    public AdminResponseTranslationDTO() {
     }
 
     public String getName() {

@@ -4,8 +4,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -19,13 +17,9 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @NotEmpty
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Translation> translations;
 
-    @NotNull
-    @NotEmpty
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Price> prices;
 
@@ -40,6 +34,11 @@ public class Product implements Serializable {
     public Product() {
     }
 
+    public Product(Set<Translation> translations, Set<Price> prices) {
+        this.translations = translations;
+        this.prices = prices;
+    }
+
     public Long getId() {
         return id;
     }
@@ -50,10 +49,6 @@ public class Product implements Serializable {
 
     public void setPrices(Set<Price> prices) {
         this.prices = prices;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Date getCreatedAt() {

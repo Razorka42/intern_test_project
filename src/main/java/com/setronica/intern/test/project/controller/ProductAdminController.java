@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @Validated
-@RequestMapping(value = "/admin")
+@RequestMapping(value = "/admin", produces = {"application/json"})
 public class ProductAdminController {
 
     private final ProductAdminServiceInterface productService;

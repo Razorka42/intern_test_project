@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public final class ClientResponseTranslationDTO {
+public class ClientResponseTranslationDTO {
     @NotNull
     @NotBlank
     @Length(max = 255)
@@ -24,6 +24,9 @@ public final class ClientResponseTranslationDTO {
         this.name = name;
         this.description = description;
         this.language = language;
+    }
+
+    public ClientResponseTranslationDTO() {
     }
 
     public String getName() {

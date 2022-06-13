@@ -3,11 +3,10 @@ package com.setronica.intern.test.project.dto.request;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 import java.util.Set;
 
 
-public final class AdminRequestProductDTO {
+public class AdminRequestProductDTO {
 
     @NotNull
     @NotEmpty
@@ -19,6 +18,7 @@ public final class AdminRequestProductDTO {
 
     public AdminRequestProductDTO() {
     }
+
     public AdminRequestProductDTO(Set<AdminRequestTranslationDTO> translations, Set<AdminRequestPriceDTO> prices) {
         this.translations = translations;
         this.prices = prices;

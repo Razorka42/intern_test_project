@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -23,6 +24,12 @@ public class ExceptionsHandler {
     private static final Logger log = Logger.getLogger("Exception logger");
 
 
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ExceptionResponse> onMissingRequestParameter(MissingServletRequestParameterException ex) {
+        log.info("Missing request parameter " + ex.getClass().getSimpleName() + " " + ex.getMessage());
+        return new ResponseEntity<>(new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<?> onResourceNotFound(ResourceNotFoundException ex) {
         log.info("Resource not found " + ex.getClass().getSimpleName() + " " + ex.getMessage());
@@ -30,9 +37,9 @@ public class ExceptionsHandler {
     }
 
     @ExceptionHandler(ResourceQueryNotFoundException.class)
-    public ResponseEntity<NotFoundError> onResourceQueryNotFound(ResourceQueryNotFoundException ex) {
+    public ResponseEntity<ExceptionResponse> onResourceQueryNotFound(ResourceQueryNotFoundException ex) {
         log.info("Resource query is not correct " + ex.getClass().getSimpleName() + " " + ex.getMessage());
-        return new ResponseEntity<>(new NotFoundError(HttpStatus.NOT_FOUND.value(), ex.getMessage()), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ExceptionResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(BadRequestException.class)

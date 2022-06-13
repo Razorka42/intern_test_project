@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
-public final class AdminResponsePriceDTO {
+public class AdminResponsePriceDTO {
     @NotNull
     @NotBlank
     private String currency;
@@ -15,6 +15,9 @@ public final class AdminResponsePriceDTO {
     @Positive
     @Digits(integer = 64, fraction = 2)
     private BigDecimal value;
+
+    public AdminResponsePriceDTO() {
+    }
 
     public AdminResponsePriceDTO(String currency, BigDecimal value) {
         this.currency = currency;
